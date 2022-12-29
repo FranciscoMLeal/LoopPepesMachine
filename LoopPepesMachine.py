@@ -9,6 +9,16 @@ import time
 import threading
 import sys
 
+isnotpressed = True
+loopisOn = False
+
+def change_loop(loop):
+    global loopisOn
+    if loop:
+        loopisOn = False
+    else:
+        loopisOn = True
+
 Filletes = []
 FilletesCor = []    
 PatColorHolder = []
@@ -372,15 +382,25 @@ height_text = tk.Entry()
 height_text.insert(0, pygame.display.Info().current_h)
 height_text.grid(row=1, column=2, sticky='W')
 
+tempo_label = tk.Label(text="Tempo:")
+tempo_label.grid(row=2, column=1, sticky='W')
+
+# Create a text box for the height value
+tempo_text = tk.Entry()
+tempo_text.insert(0, 1)
+tempo_text.grid(row=2, column=2, sticky='W')
+
 # Create a button to start the Start PepeFunction
 def start_pepe_function():
     
   # Get the width and height values from the text boxes
   width = int(width_text.get())
   height = int(height_text.get())
+  tempo = float(tempo_text.get())
 
-  StartPepeFunction(width, height)
-  loopPepe = threading.Timer(2, start_pepe_function)
+  if loopisOn:
+    StartPepeFunction(width, height)
+  loopPepe = threading.Timer(tempo, start_pepe_function)
   loopPepe.start()
   
 # Closes pygame    
@@ -392,10 +412,16 @@ def start_pepe_function():
          pygame.quit()
          sys.exit()
       
+def lets_go_function():
+    change_loop(loopisOn)
+    global isnotpressed
+    if isnotpressed:
+        start_pepe_function()
+        isnotpressed = False
   
 
-start_button = tk.Button(text="Make Pepes", command=start_pepe_function)
-start_button.grid(row=2, column=1, sticky='W')
+start_button = tk.Button(text="Make Pepes", command=lets_go_function)
+start_button.grid(row=3, column=1, sticky='W')
 
 
 def change_colors():
@@ -405,7 +431,7 @@ def change_colors():
 
 
 color_button = tk.Button(text="Change Colors", command=change_colors)
-color_button.grid(row=2, column=2, sticky='W')
+color_button.grid(row=3, column=2, sticky='W')
 
 #def update_colors(): 
 #    
