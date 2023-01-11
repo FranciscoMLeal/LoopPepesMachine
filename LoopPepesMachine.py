@@ -30,7 +30,9 @@ ShapeComandHolder = ["tt"]
 ShapeComandList = ["gr","pq","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil","pepes"]
 ShapeComandSquaresList = ["c","st","gr","pq","cic","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil","sqi","pepes"] ## "c","cic,"st","sqi" PATTERNS MISSING HERE
 choosePat = False
-
+height_global = 500
+width_global = 500
+tempo_global = 1
 
 #########################################
 #########################################
@@ -390,13 +392,46 @@ tempo_text = tk.Entry()
 tempo_text.insert(0, 1)
 tempo_text.grid(row=2, column=2, sticky='W')
 
+
+def is_float(test_data):
+    try:
+        tester = float(test_data)
+    except ValueError:
+        return False
+    return True
+
+def is_int(test_data):
+    try:
+      tester = int(test_data)
+    except ValueError:
+      return False
+    return True
+
 # Create a button to start the Start PepeFunction
 def start_pepe_function():
     
   # Get the width and height values from the text boxes
-  width = int(width_text.get())
-  height = int(height_text.get())
-  tempo = float(tempo_text.get())
+  if is_int(width_text.get()):
+    width = int(width_text.get())
+    global width_global
+    width_global = width
+  else:
+    width = width_global
+    
+  if is_int(height_text.get()):
+    height = int(height_text.get())
+    global height_global
+    height_global = height
+  else:
+    height = height_global
+
+  if is_float(tempo_text.get()):
+    tempo = float(tempo_text.get())
+    global tempo_global
+    tempo_global = tempo
+  else:
+    tempo = tempo_global
+
 
   if loopisOn:
     StartPepeFunction(width, height)
